@@ -35,3 +35,22 @@ def get_entry(title):
         return f.read().decode("utf-8")
     except FileNotFoundError:
         return None
+
+def search_entry(query):
+    search_results = []
+    
+    title = get_entry(query)
+        
+    if title == None:
+        for entry in list_entries():
+            if entry.lower().find(query.lower()) != -1:
+                search_results.append (entry)
+        if len(search_results) == 0:
+            search_results.append('None')
+    else:
+        search_results.append(query)
+    
+    #DEBUG - write search results into the file  
+    with open('search.txt', 'w') as f:
+        for s in search_results:
+            f.write(f"{s}\n")
