@@ -1,5 +1,5 @@
 import re
-
+import datetime as d
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 
@@ -36,21 +36,32 @@ def get_entry(title):
     except FileNotFoundError:
         return None
 
+
 def search_entry(query):
+    """
+    The function returns a list of all entries
+    containing the requested string as a substring. Otherwise None is returned.
+    """
     search_results = []
     
-    title = get_entry(query)
-        
-    if title == None:
-        for entry in list_entries():
-            if entry.lower().find(query.lower()) != -1:
-                search_results.append (entry)
-        if len(search_results) == 0:
-            search_results.append('None')
+    for entry in list_entries():
+        if entry.lower().find(query.lower()) != -1:
+            search_results.append (entry)
+            
+    if len(search_results) == 0:
+        # DEBUG(f"utils.py: {search_results}")
+        return None
     else:
-        search_results.append(query)
-    
-    #DEBUG - write search results into the file  
-    with open('search.txt', 'w') as f:
-        for s in search_results:
-            f.write(f"{s}\n")
+        # DEBUG(f"utils.py: {search_results}")
+        return search_results
+
+
+def DEBUG(txt):
+    """_summary_
+    This function prints text, passed as an argument into the 
+    'debug.txt' file, preceeded with the current timestamp
+    Args:
+        txt (string): debug text
+    """
+    with open('debug.txt', 'a') as f:
+        f.write(f"{d.datetime.now()}:{txt}\n")

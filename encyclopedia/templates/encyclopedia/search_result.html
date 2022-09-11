@@ -1,0 +1,17 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    Encyclopedia
+{% endblock %}
+
+{% block body %}
+    <h1>Search result</h1>
+    <p>Search request: <em>"{{ search_entry }}"</em></p>
+    <ul>
+        {% for entry in search_list %}
+            <li><a href="wiki/{{entry}}">{{ entry }}</a></li>
+            {% empty %}
+            <p>No entries found</p>
+        {% endfor %}
+    </ul>
+{% endblock %}

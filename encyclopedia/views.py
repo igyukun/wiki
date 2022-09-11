@@ -1,5 +1,7 @@
 from django.shortcuts import render
 import markdown as md
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from . import util
 
 
@@ -18,21 +20,23 @@ def entry(request, title):
 
 def search(request):
     results = []
-    # with open('search.txt', 'w') as f:
-    #     f.write("started\n")
+    
     query = ''
        
     if request.method =="GET":
         query = request.GET.get('q')
         if query == '':
             query = 'None'
-        
-        # with open('search.txt', 'a') as f:
-        #     f.write(query)
-    
-    util.search_entry(query)
-            
+    entry = util.get_entry(query)
+    if entry:
+        reversed_url = reverse('entry', args={query})
+        return HttpResponseRedirect(reversed_url)
+    else:    
+        results = util.search_entry(query)
+        util.DEBUG(f"views.py: results={str(results)}")    
     return render(request, "encyclopedia/search_result.html", {
-        "search_entry": query
-        # "   ": html_content
+        "search_entry": query,
+        "search_list":results
     })
+
+
