@@ -1,0 +1,20 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% load static %}
+
+{% block title %}
+    New Entry
+{% endblock %}
+
+{% block body %}
+    <div class="new-entry"></div>
+    <p class="err-msg">{{ err_message }}</p>
+        <h1>New Entry</h1>
+        <form action = "{% url 'new-entry' %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" class ="btn btn-outline-dark new-entry-btn" name="submit" value="Submit Entry">
+        </form>
+        <!-- <p class="err-msg">{{ err_message }}</p> -->
+    </div>
+{% endblock %}
